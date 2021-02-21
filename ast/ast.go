@@ -22,13 +22,6 @@ type Expression interface {
 	expressionNode()
 }
 
-type InfixExpression struct {
-	Token    token.Token // The operator token, e.g., +
-	Left     Expression
-	Operator string
-	Right    Expression
-}
-
 type Program struct {
 	Statements []Statement
 }
@@ -148,6 +141,13 @@ func (pe *PrefixExpression) String() string {
 	return out.String()
 }
 
+type InfixExpression struct {
+	Token    token.Token // The operator token, e.g., +
+	Left     Expression
+	Operator string
+	Right    Expression
+}
+
 func (ie *InfixExpression) expressionNode()      {}
 func (ie *InfixExpression) TokenLiteral() string { return ie.Token.Literal }
 func (ie *InfixExpression) String() string {
@@ -261,3 +261,12 @@ func (ce *CallExpression) String() string {
 
 	return out.String()
 }
+
+type StringLiteral struct {
+	Token token.Token
+	Value string
+}
+
+func (sl *StringLiteral) expressionNode() {}
+func (sl *StringLiteral) TokenLiteral() string { return sl.Token.Literal }
+func (sl *StringLiteral) String() string { return sl.Token.Literal }
