@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	NULL = &object.Null{}
-	TRUE = &object.Boolean{Value: true}
+	NULL  = &object.Null{}
+	TRUE  = &object.Boolean{Value: true}
 	FALSE = &object.Boolean{Value: false}
 )
 
@@ -178,7 +178,7 @@ func evalInfixExpression(operator string, left, right object.Object) object.Obje
 func evalIntegerInfixExpression(
 	operator string,
 	left, right object.Object,
-	) object.Object {
+) object.Object {
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 
@@ -256,7 +256,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 func evalExpressions(
 	exps []ast.Expression,
 	env *object.Environment,
-	) []object.Object {
+) []object.Object {
 	var result []object.Object
 
 	for _, e := range exps {
@@ -284,7 +284,7 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 func extendFunctionEnv(
 	fn *object.Function,
 	args []object.Object,
-	) *object.Environment {
+) *object.Environment {
 	env := object.NewEnclosedEnvironment(fn.Env)
 
 	for paramIdx, param := range fn.Parameters {
