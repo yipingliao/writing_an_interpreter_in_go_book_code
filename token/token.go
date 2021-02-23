@@ -12,8 +12,8 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers and literals
-	IDENT = "IDENT" // add, foobar, x, y, ...
-	INT   = "INT"   // 12345
+	IDENT  = "IDENT" // add, foobar, x, y, ...
+	INT    = "INT"   // 12345
 	STRING = "STRING"
 
 	// Operators
@@ -34,10 +34,12 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
+	LPAREN   = "("
+	RPAREN   = ")"
+	LBRACE   = "{"
+	RBRACE   = "}"
+	LBRACKET = "["
+	RBRACKET = "]"
 
 	// Keywords
 	FUNCTION = "FUNCTION"
