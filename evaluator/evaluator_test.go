@@ -342,8 +342,8 @@ func TestStringConcatenation(t *testing.T) {
 }
 
 func TestBuiltinFunctions(t *testing.T) {
-	tests := []struct{
-		input string
+	tests := []struct {
+		input    string
 		expected interface{}
 	}{
 		{`len("")`, 0},
@@ -351,14 +351,30 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`len("hello world")`, 11},
 		{`len(1)`, "argument to `len` not supported, got INTEGER"},
 		{`len("one", "two")`, "wrong number of arguments. got=2, want=1"},
+		{`len([1, 2])`, 2},
+		{`len([])`, 0},
+		{`len([1, "cat", 2])`, 3},
+		{`first([1, 2])`, 1},
+		{`first([1])`, 1},
+		{`first([])`, nil},
+		{`last([1, 2])`, 2},
+		{`last([])`, nil},
+		{`rest([1, 2])`, []int{2}},
+		{`rest([1, 2, 3, 4, 5])`, []int{2, 3, 4, 5}},
+		{`rest([])`, nil},
+		{`rest([1])`, []int{}},
 	}
 
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
 
-		switch expected:= tt.expected.(type) {
+		switch expected := tt.expected.(type) {
 		case int:
 			testIntegerObject(t, evaluated, int64(expected))
+		case nil:
+			testNullObject(t, evaluated)
+		case []int:
+			testArrayObject(t, evaluated, expected)
 		case string:
 			errObj, ok := evaluated.(*object.Error)
 			if !ok {
@@ -395,7 +411,7 @@ func TestArrayLiterals(t *testing.T) {
 
 func TestArrayIndexExpressions(t *testing.T) {
 	tests := []struct {
-		input string
+		input    string
 		expected interface{}
 	}{
 		{
@@ -445,4 +461,22 @@ func TestArrayIndexExpressions(t *testing.T) {
 			testNullObject(t, evaluated)
 		}
 	}
+}
+
+func testArrayObject(t *testing.T, obj object.Object, expected []int) bool {
+	result, ok := obj.(*object.Array)
+	if !ok {
+		t.Fatalf("object is not Array. got=%T (%+v)", obj, obj)
+	}
+
+	if len(result.Elements) != len(expected) {
+		t.Fatalf("array has wrong num of elements. got=%d",
+			len(result.Elements))
+	}
+
+	for idx, expectedElement := range expected {
+		testIntegerObject(t, result.Elements[idx], int64(expectedElement))
+	}
+
+	return false
 }
