@@ -363,6 +363,8 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`rest([1, 2, 3, 4, 5])`, []int{2, 3, 4, 5}},
 		{`rest([])`, nil},
 		{`rest([1])`, []int{}},
+		{`let a = [1, 2]; let b = push(a, 3); a;`, []int{1, 2}},
+		{`let a = [1, 2]; let b = push(a, 3); b;`, []int{1, 2, 3}},
 	}
 
 	for _, tt := range tests {
